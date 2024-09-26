@@ -1,5 +1,5 @@
 Notes for installing the WebApiCoreRegionMonitor 1.00
-The WebApiCoreRegionMonitor has the purpose of collecting visits on your region. This product cannot be found in OpenSIm  at the moment, working on a version2 atm 
+The WebApiCoreRegionMonitor has the purpose of collecting visits on your region. This product cannot be found in OpenSim at the moment, as i'm working on a version2,
 But gonna be found in OpenSim at the Valland Shop, see http://www.vallands.ca for more information.
 
 You need dotnet 8.0.31 to run the WebApiCoreRegionMonitor.
@@ -22,36 +22,25 @@ Note that for these steps and further down the road, you really need to know wha
 
 if you never installed this package, proceed directly to step 1.
 
-Updating
-if you already installed this package, then proceed with updates .
-
-  1. sudo systemctl stop kestrel-WebApiCoreRental.service 
-  2. Put the content of the "publish" folder in  /var/www/RentalApi :
-  3. install the appropriate script to go from your current version to the latest :
-  	update_db200.sql  to upgrade from 1.xx to 2.0.
-   	update_db201.sql  to upgrade from 2.00 to 2.01.  (search and replace "YOURDBSHEMA" by your OpenSim SHEMA for your regions)
-    update_db202.sql  to upgrade from 2.01 to 2.02  (search and replace "YOURDBSHEMA" by your OpenSim SHEMA for your regions)
-update_db300.sql  to upgrade from 2.02 ro 3.00   (search and replace "YOURDBSHEMA" by your OpenSim SHEMA for your regions)
-
-  4. sudo systemctl start kestrel-WebApiCoreRental.service 
-You stop here, you should have the latest version.
+--- updating notes and scripts
 
 Step 1: Get the package
-You will need the latest version of WebApiCoreRental, you can get it here: https://github.com/valr300/WebApiCoreRental You can get the folder "publish" only, the source isn’t needed.
+You will need the latest version of WebApiCoreRegionMonitor, you can get it here: https://github.com/valr300/WebApiCoreRegionMonitor You can get the folder "publish" only, the source isn’t needed.
 
 Create folder /var/www/RentalApi on your linux Machine:
 
 sudo mkdir /var/www/RentalApi
-Put the content of the "publish" folder in /var/www/RentalApi :
+Put the content of the "publish" folder in /var/www/RegionMonitor :
 
 cd {the place you put the package}
     
-sudo cp -r * /var/www/RentalApi
+sudo cp -r * /var/www/RegionMonitor
 Step 2: Create the Database
-Execute the following script in your Database MySql : (search and replace "YOURDBSHEMA" by your OpenSim SHEMA for your regions)
+Execute the following script in your Database MySql : 
 
-Rental_Rentals.sql  		will build the database Rental and the Tables
-Rental_routines.sql             will build the stored procs.  
+db_100.sql  		will build the database RegionMonitor, the Tables, views and procedure
+db_management.sql             This one show some example for querying the database
+
 Step 3: Create The user database for the Rental database
 execute the following lines.
 
@@ -59,7 +48,8 @@ mysql -u root --password
 (enter your mysql password, or if you haven't set password for MySQL server, type "mysql -u root" instead) You can even use MySQL Command Line Client on the Start menu on Windows. After login, create user, or if you prefer proceed to create you user via the Workbench, much easier!.
 
 CREATE USER 'YourDBUser'@'localhost' IDENTIFIED BY 'YOURPASSWORD';
-GRANT ALL PRIVILEGES ON YourDBUser.* TO 'Rental'@'localhost';
+GRANT ALL PRIVILEGES ON YourDBUser.* TO 'RegionMonitor'@'localhost';
+
 Step 4: Add your API to Nginx
 you will need to edit your sites-available/default and add the API.
 
