@@ -1,4 +1,6 @@
-Notes for installing the WebApiCoreRegionMonitor 1.00
+#Notes for installing the WebApiCoreRegionMonitor 1.00
+-----------------------------------------------------
+
 The WebApiCoreRegionMonitor has the purpose of collecting visits on your region. This product cannot be found in OpenSim at the moment, as i'm working on a version2,
 But gonna be found in OpenSim at the Valland Shop, see http://www.vallands.ca for more information.
 
@@ -9,20 +11,27 @@ You must be the owner of your system, as you will need the root power.
 
 This document show the installation on:
 
--Linux  Ubuntu 22.04.2 LTS"
+    -Linux  Ubuntu 22.04.2 LTS"
 
--nginx/1.18.0 (Ubuntu) 
+    -nginx/1.18.0 (Ubuntu) 
 
--MySql Database  8.0.36-0ubuntu0.22.04.1
+    -MySql Database  8.0.36-0ubuntu0.22.04.1
 
--dotnet    8.0.31 [/usr/lib/dotnet/sdk]
+    -dotnet    8.0.31 [/usr/lib/dotnet/sdk]
+    
 It should be compatible for windows and probably MariaDB, although I haven’t tested it, and of course the installation will vary, in that case use these notes as a roughly guide.
 
-Note that for these steps and further down the road, you really need to know what you are doing, and taking these steps I took here won’t necessarily mean success on your installation. as your installation might be slightly different than mine, however, I think that if I show you what I did, it might help you find what you need to do, adapting these instructions to your own environment. And I am not responsible in any way shape or form on whatever you do on your system. Take backups before proceeding.
+Note that for these steps and further down the road, you really need to know what you are doing, 
+and taking these steps I took here won’t necessarily mean success on your installation. 
+as your installation might be slightly different than mine, 
+however, I think that if I show you what I did, it might help you find what you need to do, adapting these instructions to your own environment. 
+And I am not responsible in any way shape or form on whatever you do on your system. 
+Take backups before proceeding.
 
 if you never installed this package, proceed directly to step 1.
 
---- updating notes and scripts
+#updating 
+----------
 
 Step 1: Get the package
 You will need the latest version of WebApiCoreRegionMonitor, you can get it here: https://github.com/valr300/WebApiCoreRegionMonitor You can get the folder "publish" only, the source isn’t needed.
