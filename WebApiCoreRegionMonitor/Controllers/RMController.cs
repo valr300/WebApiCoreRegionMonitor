@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Diagnostics;
 using Google.Protobuf;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using MySqlX.XDevAPI.Relational;
@@ -31,12 +32,13 @@ namespace WebApiCoreRegionMonitor.Controllers
             int rows = -1;
             string trace = "";
             string sp = aVisit.Post;
+            string Response= "";
 
             try
             {
                 string connStr = _configuration.GetSection("ConnectionStrings").GetSection("RegionMonitor").Value;
 
-                if (sp != "AddVisitor")
+                if ( !(sp == "AddVisitor" || sp == "SendLastRows" ))
                     return "";
 
                 //receive key7ba0a504-dcf1 - 4922 - b46d - d22b30610ec9,status = 400 meta = body ={
@@ -55,19 +57,21 @@ namespace WebApiCoreRegionMonitor.Controllers
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
 
-                DateTime ArrivalTimeStamp=DateTime.Now;  // variable declaration
-                DateTime DepartureTimeStamp=DateTime.Now;  // variable declaration
-                if (!string.IsNullOrWhiteSpace(aVisit.ArrivalTimeStamp))
-                    ArrivalTimeStamp = DateTime.Parse(aVisit.ArrivalTimeStamp);
 
-
-                if (!string.IsNullOrWhiteSpace(aVisit.DepartureTimeStamp))
-                    DepartureTimeStamp = DateTime.Parse(aVisit.DepartureTimeStamp);
 
 
 
                 if (sp == "AddVisitor")
                 {
+                    DateTime ArrivalTimeStamp = DateTime.Now;  // variable declaration
+                    DateTime DepartureTimeStamp = DateTime.Now;  // variable declaration
+                    if (!string.IsNullOrWhiteSpace(aVisit.ArrivalTimeStamp))
+                        ArrivalTimeStamp = DateTime.Parse(aVisit.ArrivalTimeStamp);
+
+
+                    if (!string.IsNullOrWhiteSpace(aVisit.DepartureTimeStamp))
+                        DepartureTimeStamp = DateTime.Parse(aVisit.DepartureTimeStamp);
+
                     cmd.Parameters.AddWithValue("@IdRegion", aVisit.IdSim);
                     cmd.Parameters.AddWithValue("@ArrivalTimeStamp", ArrivalTimeStamp);
                     cmd.Parameters.AddWithValue("@IdAvatar", aVisit.IdAvatar);
@@ -87,6 +91,27 @@ namespace WebApiCoreRegionMonitor.Controllers
 
                     rows = cmd.ExecuteNonQuery();
                     conn.Close();
+                    Response = rows.ToString();
+                }
+                if (sp == "SendLastRows")
+                {
+               
+                    cmd.Parameters.AddWithValue("@IdRegion", aVisit.IdSim);
+                    cmd.Parameters.AddWithValue("@NumberRows", aVisit.NumberRows);
+                    trace += "\n4";
+                    conn.Open();
+
+                  //  rows = cmd.ExecuteReader();
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Response+= "\n"+String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}|{13}", 
+                            reader[0], reader[1], reader[2], reader[3], reader[4], reader[5], reader[6],
+                            reader[7], reader[8], reader[9], reader[10], reader[11], reader[12], reader[13]);
+                    }
+
+                    conn.Close();
+                    
                 }
             }
             catch (Exception ex)
@@ -95,7 +120,7 @@ namespace WebApiCoreRegionMonitor.Controllers
 
             }
 
-            return rows.ToString();
+            return Response;
         }
     }
 }
