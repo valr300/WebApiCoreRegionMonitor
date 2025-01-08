@@ -36,3 +36,9 @@ update RegionMonitor.Configs set Value='30' where param='30DAYS';
 update RegionMonitor.Configs set Value='-05.00' where param='TIMEZONE'; -- set your time zone, so data get listed with your current time zone
 
 
+--Adding the Avatarname you dont want listed  in the views (LISTOWNER, typicalyy that would be your AvatarName, and or maybe your staff)
+select * from ExcludedUsers;   -- see whose is excluded
+insert ExcludedUsers select "Test";       -- replace avatarname by the Avatarname you dont want listed, do as many as you want, one by one
+delete from ExcludedUsers where AvatarName="Test";   -- if you ever want to remove one from the list
+
+
