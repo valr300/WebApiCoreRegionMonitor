@@ -1,8 +1,9 @@
-#Notes for installing the WebApiCoreRegionMonitor 1.00
+#Notes for installing the WebApiCoreRegionMonitor 2.00
 -----------------------------------------------------
 
-The WebApiCoreRegionMonitor has the purpose of collecting visits on your region. This product cannot be found in OpenSim at the moment, as i'm working on a version2,
-But gonna be found in OpenSim at the Valland Shop, see http://www.vallands.ca for more information.
+The WebApiCoreRegionMonitor has the purpose of collecting visits on your OpenSim region. You can find the OpenSim part at 
+the VallandShop (hop://hg.osgrid.org:80/ValLands/1180/815/52),
+see http://www.vallands.ca for more information.
 
 You need dotnet 8.0.31 to run the WebApiCoreRegionMonitor.
 
@@ -30,9 +31,6 @@ Take backups before proceeding.
 
 if you never installed this package, proceed directly to step 1.
 
-#updating 
-----------
-no  update script for the moment
 
 
 #Step 1: Get the package
@@ -102,6 +100,8 @@ then enter the following command to tell Nginx the change
     sudo service nginx reload  
     
 (at this point it would be wise to check if your web site is still working, make sure you didn’t cause any mess)
+
+Note, there is no need to add this to your firewall, the adress will be use localy only.
 
 #Step 5: Configuring the WebApiCoreRegionMonitor and first test
 ------------------------------------------------------------
@@ -190,10 +190,23 @@ then restart your region
 
 #Step 10: Tell the RegionMonitor Inworld your Server URL
 --------------------------------------------------------
-This steps comming soon.
+Inworld, edit the "!Config" notecard found in the "RegionMonitor"  prim content.
+Set the :
+IdSim=TheIdOfyourSim  # The same id you defined in your region file
+UrlSendToApi=http://localhost:YOURPORT   # replace the "YOURPORT" by your port 
 
 
-#Step 11: Queryiing your data
+#Step 11: Testing
+-----------------
+Inworld, press the button "Test",
+you will see the return message in the public chat, if everything work ok you should also see a new record in the table visits with the avatar Name "Valerie Test".
+Just follow what the return message says if its not working.
+When you are done with testing, you can delete the current test data from your workbench by issuing those query : (be careful, this will delete all data in the Visits tables)
+delete from RegionMonitor.Visits_Zone;
+delete from RegionMonitor.Visits ;
+
+
+#Step 12: Queryiing your data
 -----------------------------
 The stats on MySql are populated on a few tables, you can query them from your Workbench or any other data tools,
 here sre some quey you can use for querying
@@ -245,3 +258,7 @@ Querying the view:
     select * from RegionMonitor.Users_Stats_LastnDays;
     select * from RegionMonitor.Users_Stats_LastnDays order by NbrTime Desc, AvatarName, RegionName
 
+
+Setps 13: All install now
+-------------------------
+If you have any questions, please join me either online or leave me a message on Element (https://matrix.to/#/#valr30room:matrix.org)
