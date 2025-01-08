@@ -1,4 +1,4 @@
-﻿-- to add Region :
+ ﻿-- to add Region :
 insert RegionMonitor.Regions select 'uuid of your region', 'Name of your region';
 
 
@@ -33,6 +33,6 @@ update RegionMonitor.Configs set Value='0' where param='LISTOWNER'; -- List data
 -- stats per user :  Last n Days  (for exemple if you want to see the last 45 days instead, write 45
 update RegionMonitor.Configs set Value='30' where param='30DAYS';
 -- change / Set timezone
-update RegionMonitor.Configs set Value='-05.00' where param='TIMEZONE';
+update RegionMonitor.Configs set Value='-05.00' where param='TIMEZONE'; -- set your time zone, so data get listed with your current time zone
 
 
