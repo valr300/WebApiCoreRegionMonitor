@@ -49,6 +49,54 @@ CREATE TABLE `RegionMonitor`.`ExcludedUsers` (
 
 
 DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `FmtTimeDuration`(NbrSec integer) RETURNS varchar(20) CHARSET utf8mb4
+BEGIN
+  declare RetVal varchar(20);
+   declare NbSecond integer;
+   declare NbMinute integer;
+   declare NbHour integer;
+   declare NbDay integer;
+   
+   set RetVal = '';
+   set NbMinute = NbrSec div 60;
+   set NbSecond = NbrSec - (NbMinute * 60);
+   set NbHour = NbMinute div  60;
+   set NbMinute = NbMinute - (NbHour * 60);
+   set NbDay = NbHour div 24;
+   set NbHour = NbHour - (NbDay *24);
+   
+   
+
+   set RetVal = if(NbDay > 0, concat(cast( NbDay as char(5) ) ,'d'), '');
+   set RetVal = concat(RetVal, if(NbHour > 0, concat(If(RetVal != '',' ','') , concat(cast( NbHour as char(5)) ,'h')), ''));
+   set RetVal = concat(RetVal, if(NbMinute > 0, concat(If(RetVal != '',' ','') , concat(cast( NbMinute as char(5)) ,'m')), ''));
+   set RetVal = concat(RetVal, if(NbSecond > 0, concat(If(RetVal != '',' ','') , concat(cast( NbSecond as char(5)) ,'s')), ''));
+   
+RETURN (RetVal);
+END$$
+DELIMITER ;
+
+
+select * from Paypal.Paypals;
+
+#delete from Paypal.Paypals where AvatarName ='Valerie NatureInSim' ;
+#delete from Paypal.Paypals where  ReceiverEmail ='sb-tl9qw30475268@business.example.com' ;
+
+
+call FinalizePaypal('EF000049','Vallands','Valerie Nature InSim','3a774a3a-d04e-43b2-803a-65fdc53dad37'); #, @vMcGross, @vMcCurrency,@vPaymentStatus);
+select @vMcGross, @vMcCurrency,@vPaymentStatus;
+
+#update Paypal.Paypals set AvatarName="", AvatarId="", RegionName="";
+
+/*
+delete from Paypals
+where Payment_date <='2024-06-07 09:35:24'
+ order by Payment_date desc
+*/
+
+
+
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `AddVisitor`(
 
   IdRegion varchar(36),
