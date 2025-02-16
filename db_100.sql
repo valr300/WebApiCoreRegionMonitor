@@ -77,22 +77,6 @@ END$$
 DELIMITER ;
 
 
-select * from Paypal.Paypals;
-
-#delete from Paypal.Paypals where AvatarName ='Valerie NatureInSim' ;
-#delete from Paypal.Paypals where  ReceiverEmail ='sb-tl9qw30475268@business.example.com' ;
-
-
-call FinalizePaypal('EF000049','Vallands','Valerie Nature InSim','3a774a3a-d04e-43b2-803a-65fdc53dad37'); #, @vMcGross, @vMcCurrency,@vPaymentStatus);
-select @vMcGross, @vMcCurrency,@vPaymentStatus;
-
-#update Paypal.Paypals set AvatarName="", AvatarId="", RegionName="";
-
-/*
-delete from Paypals
-where Payment_date <='2024-06-07 09:35:24'
- order by Payment_date desc
-*/
 
 
 
