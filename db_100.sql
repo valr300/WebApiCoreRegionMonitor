@@ -50,6 +50,8 @@ CREATE TABLE `RegionMonitor`.`ExcludedUsers` (
 
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` FUNCTION `FmtTimeDuration`(NbrSec integer) RETURNS varchar(20) CHARSET utf8mb4
+DETERMINISTIC
+READS SQL DATA
 BEGIN
   declare RetVal varchar(20);
    declare NbSecond integer;
